@@ -1,8 +1,7 @@
+import { HotelWithSearchTermGroups } from '../model/hotel/type/hotel-with-search-term-groups';
+
 interface Props {
-  hotels?: Array<{
-    _id: string;
-    hotel_name: string;
-  }>;
+  hotels?: HotelWithSearchTermGroups[];
   showClearButton: boolean;
   onSearch: (searchTerm: string) => void;
 }
@@ -33,9 +32,9 @@ function App(props: Props) {
                   <h2>Hotels</h2>
                   {props.hotels.length ? props.hotels.map((hotel, index) => (
                     <li key={index}>
-                      <a href={`/hotels/${hotel._id}`} className="dropdown-item">
+                      <a href={`/hotels/${hotel.hotel._id}`} className="dropdown-item">
                         <i className="fa fa-building mr-2"></i>
-                        {hotel.hotel_name}
+                        {hotel.hotel.hotel_name}
                       </a>
                       <hr className="divider" />
                     </li>

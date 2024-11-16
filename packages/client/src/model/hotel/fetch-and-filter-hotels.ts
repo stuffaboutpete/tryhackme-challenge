@@ -1,20 +1,14 @@
-import { Hotel } from './type/hotel';
+import { HotelWithSearchTermGroups } from './type/hotel-with-search-term-groups';
 
-type T = (searchTerm: string, apiUrl: string) => { abort: (reason: string) => void, hotels: Promise<Hotel[]> };
+type T = (searchTerm: string, apiUrl: string) => { abort: (reason: string) => void, hotels: Promise<HotelWithSearchTermGroups[]> };
 
 export const fetchAndFilterHotels: T = (value, apiUrl) => {
   const abortController = new AbortController();
 
   const makeRequest = async () => {
-    const hotelsData = await fetch(`${apiUrl}/hotels`, { signal: abortController.signal });
-    const hotels = (await hotelsData.json()) as Hotel[];
-    return hotels.filter(
-      ({ chain_name, hotel_name, city, country }) =>
-        chain_name.toLowerCase().includes(value.toLowerCase()) ||
-        hotel_name.toLowerCase().includes(value.toLowerCase()) ||
-        city.toLowerCase().includes(value.toLowerCase()) ||
-        country.toLowerCase().includes(value.toLowerCase())
-    );
+    const hotelsData = await fetch(`${apiUrl}/search/${value}`, { signal: abortController.signal });
+    const payload = await hotelsData.json();
+    return payload.results;
   };
 
   return {
