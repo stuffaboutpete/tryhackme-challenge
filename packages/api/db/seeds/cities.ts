@@ -1,46 +1,9 @@
-export const cities = [
-  { name: 'Auckland' },
-  { name: 'Bordeaux' },
-  { name: 'Brussels' },
-  { name: 'Burgas' },
-  { name: 'Cali' },
-  { name: 'Cartagena' },
-  { name: 'Dublin' },
-  { name: 'Edinburgh' },
-  { name: 'Hangzhou' },
-  { name: 'Hildesheim' },
-  { name: 'Hong Kong' },
-  { name: 'Hurghada' },
-  { name: 'Iquique' },
-  { name: 'Jaipur' },
-  { name: 'Kobe' },
-  { name: 'Koh Samet' },
-  { name: 'Kyoto' },
-  { name: 'Las Vegas (NV)' },
-  { name: 'Leon' },
-  { name: 'Lima' },
-  { name: 'London' },
-  { name: 'Macau' },
-  { name: 'Madrid' },
-  { name: 'Malaga' },
-  { name: 'Medellin' },
-  { name: 'Mombasa' },
-  { name: 'Munakata' },
-  { name: 'Nara' },
-  { name: 'New Delhi and NCR' },
-  { name: 'Nice' },
-  { name: 'Pittsburgh (PA)' },
-  { name: 'Rome' },
-  { name: 'Round Rock (TX)' },
-  { name: 'Sanremo' },
-  { name: 'Santa Margherita Ligure' },
-  { name: 'Seinajoki' },
-  { name: 'Shanghai' },
-  { name: 'So Burlington (VT)' },
-  { name: "St. Julian's" },
-  { name: 'Taipei' },
-  { name: 'Taxco' },
-  { name: 'Tokyo' },
-  { name: 'Torremolinos' },
-  { name: 'Visakhapatnam' },
-];
+import { faker } from '@faker-js/faker';
+
+faker.seed(123);
+
+const numberOfCities = 4000;
+const cityNames = faker.helpers.uniqueArray(faker.location.city, numberOfCities);
+const cityObjects = cityNames.map(name => ({ name }));
+
+export { cityObjects as cities };
