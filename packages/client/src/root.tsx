@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { getCodeSandboxHost } from "@codesandbox/utils";
 import App from './component/app';
 import { Hotel } from './model/hotel/type/hotel';
@@ -10,6 +10,7 @@ const apiUrl = codeSandboxHost ? `https://${codeSandboxHost}` : 'http://localhos
 function Root() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [showClearBtn, setShowClearBtn] = useState(false);
+  const abortRequestRef = useRef<undefined | ((reason: string) => void)>();
 
   const fetchData = async (searchTerm: string) => {
     if (searchTerm === '') {
@@ -18,9 +19,19 @@ function Root() {
       return;
     }
 
-    const filteredHotels = await fetchAndFilterHotels(searchTerm, apiUrl);
+    if (abortRequestRef.current) {
+      abortRequestRef.current('Request no longer needed');
+    }
+
+    const { abort, hotels: hotelsPromise } = fetchAndFilterHotels(searchTerm, apiUrl);
+
+    abortRequestRef.current = abort;
+
+    const hotels = await hotelsPromise;
+
+    abortRequestRef.current = undefined;
     setShowClearBtn(true);
-    setHotels(filteredHotels);
+    setHotels(hotels);
   };
 
   return (
