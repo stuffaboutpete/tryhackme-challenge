@@ -4,7 +4,7 @@ import { Response } from './type/response';
 
 type T = (searchTerm: string, apiUrl: string) => { abort: AbortCallback, response: Promise<AllSearchResults> };
 
-export const search: T = (value, apiUrl) => {
+export const search: T = (searchTerm, apiUrl) => {
   const abortController = new AbortController();
 
   const makeRequest = async () => {
