@@ -1,4 +1,5 @@
 import { HotelWithSearchTermGroups } from '../model/hotel/type/hotel-with-search-term-groups';
+import TextHighlight from './text-highlight';
 
 interface Props {
   hotels?: HotelWithSearchTermGroups[];
@@ -34,7 +35,11 @@ function App(props: Props) {
                     <li key={index}>
                       <a href={`/hotels/${hotel.hotel._id}`} className="dropdown-item">
                         <i className="fa fa-building mr-2"></i>
-                        {hotel.hotel.hotel_name}
+                        <TextHighlight
+                          text={hotel.hotel.hotel_name}
+                          highlights={hotel.searchTermGroups}
+                          highlightClassName="text-info font-weight-bold"
+                        />
                       </a>
                       <hr className="divider" />
                     </li>
