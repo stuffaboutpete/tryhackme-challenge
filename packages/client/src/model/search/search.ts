@@ -8,7 +8,7 @@ export const search: T = (searchTerm, apiUrl) => {
   const abortController = new AbortController();
 
   const makeRequest = async () => {
-    const response = await fetch(`${apiUrl}/search/${value}`, { signal: abortController.signal });
+    const response = await fetch(`${apiUrl}/search/${searchTerm}/5`, { signal: abortController.signal });
     return response.json();
   };
 
