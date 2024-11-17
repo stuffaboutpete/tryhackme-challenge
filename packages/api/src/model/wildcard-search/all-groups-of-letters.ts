@@ -4,7 +4,7 @@ import { firstGroupOfLetters } from './first-group-of-letters';
 type T = (targetString: string, searchTerm: string) => HighlightGroup[];
 
 export const allGroupsOfLetters: T = (targetString, searchTerm) => {
-  const nextGroup = firstGroupOfLetters(targetString, searchTerm);
+  const nextGroup = firstGroupOfLetters(targetString.toLowerCase(), searchTerm.toLowerCase());
 
   if (nextGroup === undefined) return [];
 

@@ -12,7 +12,7 @@ export const search: T = async (request, response, database) => {
   const hotelsCollection = database.collection('hotels');
   const countriesCollection = database.collection('countries');
   const citiesCollection = database.collection('cities');
-  const query = (field: string) => ({ [field]: { $regex: wildcardSearchPattern(searchQuery) } });
+  const query = (field: string) => ({ [field]: { $regex: wildcardSearchPattern(searchQuery), $options: 'i' } });
   const hotelsQueryOptions = { projection: { _id: 1, hotel_name: 1 } };
   const countriesQueryOptions = { projection: { _id: 1, country: 1 } };
   const citiesQueryOptions = { projection: { _id: 1, name: 1 } };
