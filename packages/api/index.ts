@@ -46,7 +46,7 @@ app.get('/search/:query/:numberOfResults?', async (req, res) => {
     await mongoClient.connect();
     console.log('Successfully connected to MongoDB!');
     const db = mongoClient.db()
-    const collection = await db.collection('hotels');
+    const collection = db.collection('hotels');
     const query = { hotel_name: { $regex: wildcardSearchPattern(searchQuery) } };
     const queryOptions = { projection: { _id: 1, hotel_name: 1 } };
     const hotels = await collection.find(query, queryOptions).toArray();
