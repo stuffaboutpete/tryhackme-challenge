@@ -1,8 +1,13 @@
-import { HotelWithSearchTermGroups } from '../model/hotel/type/hotel-with-search-term-groups';
-import TextHighlight from './text-highlight';
+import { City } from '../model/entities/type/city';
+import { Country } from '../model/entities/type/country';
+import { Hotel } from '../model/entities/type/hotel';
+import { SearchResult } from '../model/search/type/search-result';
+import SearchResultSection from './search-result-section';
 
 interface Props {
-  hotels?: HotelWithSearchTermGroups[];
+  hotels?: SearchResult<Hotel>[];
+  countries?: SearchResult<Country>[];
+  cities?: SearchResult<City>[];
   showClearButton: boolean;
   onSearch: (searchTerm: string) => void;
 }
@@ -28,26 +33,38 @@ function App(props: Props) {
                   </span>
                 )}
               </div>
-              {props.hotels && props.hotels.length > 0 && (
+              {(!!props.hotels?.length || !!props.countries?.length || !!props.cities?.length) && (
                 <div className="search-dropdown-menu dropdown-menu w-100 show p-2">
-                  <h2>Hotels</h2>
-                  {props.hotels.length ? props.hotels.map((hotel, index) => (
-                    <li key={index}>
-                      <a href={`/hotels/${hotel.hotel._id}`} className="dropdown-item">
-                        <i className="fa fa-building mr-2"></i>
-                        <TextHighlight
-                          text={hotel.hotel.hotel_name}
-                          highlights={hotel.searchTermGroups}
-                          highlightClassName="text-info font-weight-bold"
-                        />
-                      </a>
-                      <hr className="divider" />
-                    </li>
-                  )) : <p>No hotels matched</p>}
-                  <h2>Countries</h2>
-                  <p>No countries matched</p>
-                  <h2>Cities</h2>
-                  <p>No cities matched</p>
+                  <SearchResultSection
+                    header="Hotels"
+                    noResultText="No hotels matched"
+                    icon="building"
+                    results={(props.hotels || []).map(hotel => ({
+                      displayName: hotel.entity.hotel_name,
+                      link: `/hotels/${hotel.entity._id}`,
+                      searchTermGroups: hotel.searchTermGroups
+                    }))}
+                  />
+                  <SearchResultSection
+                    header="Countries"
+                    noResultText="No countries matched"
+                    icon="globe"
+                    results={(props.countries || []).map(country => ({
+                      displayName: country.entity.country,
+                      link: `/countries/${country.entity._id}`,
+                      searchTermGroups: country.searchTermGroups
+                    }))}
+                  />
+                  <SearchResultSection
+                    header="Cities"
+                    noResultText="No cities matched"
+                    icon="map-marker"
+                    results={(props.cities || []).map(city => ({
+                      displayName: city.entity.name,
+                      link: `/cities/${city.entity._id}`,
+                      searchTermGroups: city.searchTermGroups
+                    }))}
+                  />
                 </div>
               )}
             </div>

@@ -46,10 +46,18 @@ app.get('/search/:query/:numberOfResults?', async (req, res) => {
     await mongoClient.connect();
     console.log('Successfully connected to MongoDB!');
     const db = mongoClient.db()
-    const collection = db.collection('hotels');
-    const query = { hotel_name: { $regex: wildcardSearchPattern(searchQuery) } };
-    const queryOptions = { projection: { _id: 1, hotel_name: 1 } };
-    const hotels = await collection.find(query, queryOptions).toArray();
+    const hotelsCollection = db.collection('hotels');
+    const countriesCollection = db.collection('countries');
+    const citiesCollection = db.collection('cities');
+    const query = (field: string) => ({ [field]: { $regex: wildcardSearchPattern(searchQuery) } });
+    const hotelsQueryOptions = { projection: { _id: 1, hotel_name: 1 } };
+    const countriesQueryOptions = { projection: { _id: 1, country: 1 } };
+    const citiesQueryOptions = { projection: { _id: 1, name: 1 } };
+    const hotelsPromise = hotelsCollection.find(query('hotel_name'), hotelsQueryOptions).toArray();
+    const countriesPromise = countriesCollection.find(query('country'), countriesQueryOptions).toArray();
+    const citiesPromise = citiesCollection.find(query('name'), citiesQueryOptions).toArray();
+
+    const [hotels, countries, cities] = await Promise.all([hotelsPromise, countriesPromise, citiesPromise]);
 
     const evaluatedHotels = hotels.map(hotel => ({
       hotel,
@@ -58,9 +66,33 @@ app.get('/search/:query/:numberOfResults?', async (req, res) => {
 
     evaluatedHotels.sort((a, b) => a.searchTermGroups.length - b.searchTermGroups.length);
 
+    const evaluatedCountries = countries.map(country => ({
+      country,
+      searchTermGroups: highlightResult(country.country, searchQuery)
+    }));
+
+    evaluatedCountries.sort((a, b) => a.searchTermGroups.length - b.searchTermGroups.length);
+
+    const evaluatedCities = cities.map(city => ({
+      city,
+      searchTermGroups: highlightResult(city.name, searchQuery)
+    }));
+
+    evaluatedCities.sort((a, b) => a.searchTermGroups.length - b.searchTermGroups.length);
+
     res.send({
-      count: Math.min(evaluatedHotels.length, numberOfResults),
-      results: evaluatedHotels.slice(0, numberOfResults)
+      hotels: {
+        count: Math.min(evaluatedHotels.length, numberOfResults),
+        results: evaluatedHotels.slice(0, numberOfResults)
+      },
+      countries: {
+        count: Math.min(evaluatedCountries.length, numberOfResults),
+        results: evaluatedCountries.slice(0, numberOfResults)
+      },
+      cities: {
+        count: Math.min(evaluatedCities.length, numberOfResults),
+        results: evaluatedCities.slice(0, numberOfResults)
+      }
     });
   } finally {
     await mongoClient.close();
