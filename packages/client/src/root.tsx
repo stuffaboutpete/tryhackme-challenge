@@ -12,21 +12,31 @@ const codeSandboxHost = getCodeSandboxHost(3001);
 const apiUrl = codeSandboxHost ? `https://${codeSandboxHost}` : 'http://localhost:3001';
 
 function Root() {
+  const [searchTerm, setSearchTerm] = useState('');
   const [hotels, setHotels] = useState<Array<SearchResult<Hotel>>>();
   const [countries, setCountries] = useState<Array<SearchResult<Country>>>();
   const [cities, setCities] = useState<Array<SearchResult<City>>>();
   const [showClearBtn, setShowClearBtn] = useState(false);
   const abortRequestRef = useRef<undefined | AbortCallback>();
 
-  const fetchData = async (searchTerm: string) => {
-    if (searchTerm === '') {
-      setHotels([]);
-      setCountries([]);
-      setCities([]);
-      setShowClearBtn(false);
-      return;
-    }
+  const clearResults = () => {
+    setSearchTerm('');
+    setHotels([]);
+    setCountries([]);
+    setCities([]);
+    setShowClearBtn(false);
+  };
 
+  const onSearch = (searchTerm: string) => {
+    if (searchTerm === '') {
+      clearResults();
+    } else {
+      setSearchTerm(searchTerm);
+      fetchData(searchTerm);
+    }
+  };
+
+  const fetchData = async (searchTerm: string) => {
     if (abortRequestRef.current) abortRequestRef.current('Request no longer needed');
 
     const { abort, response } = search(searchTerm, apiUrl);
@@ -42,11 +52,13 @@ function Root() {
 
   return (
     <App
+      searchTerm={searchTerm}
       hotels={hotels}
       countries={countries}
       cities={cities}
       showClearButton={showClearBtn}
-      onSearch={fetchData}
+      onSearch={onSearch}
+      onClearResults={clearResults}
     />
   );
 }

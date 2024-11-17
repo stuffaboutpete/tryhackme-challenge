@@ -5,11 +5,13 @@ import { SearchResult } from '../model/search/type/search-result';
 import SearchResultSection from './search-result-section';
 
 interface Props {
+  searchTerm: string;
   hotels?: SearchResult<Hotel>[];
   countries?: SearchResult<Country>[];
   cities?: SearchResult<City>[];
   showClearButton: boolean;
   onSearch: (searchTerm: string) => void;
+  onClearResults: () => void;
 }
 
 function App(props: Props) {
@@ -23,13 +25,14 @@ function App(props: Props) {
                 <i className="fa fa-search"></i>
                 <input
                   type="text"
+                  value={props.searchTerm}
                   className="form-control form-input"
                   placeholder="Search accommodation..."
                   onChange={event => props.onSearch(event.target.value)}
                 />
                 {props.showClearButton && (
                   <span className="left-pan">
-                    <i className="fa fa-close"></i>
+                    <i className="fa fa-close" onClick={() => props.onClearResults()}></i>
                   </span>
                 )}
               </div>
