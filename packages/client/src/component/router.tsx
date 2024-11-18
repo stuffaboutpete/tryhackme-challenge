@@ -22,7 +22,7 @@ function Router(props: Props) {
           hotels={props.state.searchResults?.hotels }
           countries={props.state.searchResults?.countries}
           cities={props.state.searchResults?.cities}
-          searchActive={props.state.searchRequestActive ? true : false}
+          searchActive={props.state.dataRequestActive ? true : false}
           showClearButton={props.state.searchResults ? true : false}
           onSearch={searchTerm => props.dispatch('SEARCH_TERM_CHANGE', searchTerm)}
           onClearResults={() => props.dispatch('CLEAR_SEARCH_RESULTS', undefined)}
@@ -34,21 +34,33 @@ function Router(props: Props) {
       path: '/hotels/:id',
       loader: async ({ params }) => params.id,
       element: <WithId render={id => (
-        <PageSingleEntity type="Hotel" id={id} />
+        <PageSingleEntity
+          type="Hotel"
+          id={id}
+          entity={props.state.loadedEntity}
+        />
       )} />
     },
     {
       path: '/countries/:id',
       loader: async ({ params }) => params.id,
       element: <WithId render={id => (
-        <PageSingleEntity type="Country" id={id} />
+        <PageSingleEntity
+          type="Country"
+          id={id}
+          entity={props.state.loadedEntity}
+        />
       )} />
     },
     {
       path: '/cities/:id',
       loader: async ({ params }) => params.id,
       element: <WithId render={id => (
-        <PageSingleEntity type="City" id={id} />
+        <PageSingleEntity
+          type="City"
+          id={id}
+          entity={props.state.loadedEntity}
+        />
       )} />
     }
   ],

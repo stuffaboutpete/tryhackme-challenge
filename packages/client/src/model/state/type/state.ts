@@ -1,7 +1,8 @@
 import { City } from '../../entities/type/city';
 import { Country } from '../../entities/type/country';
+import { Entity } from '../../entities/type/entity';
 import { Hotel } from '../../entities/type/hotel';
-import { AbortCallback } from '../../search/type/abort-callback';
+import { AbortCallback } from '../../fetch/type/abort-callback';
 import { SearchResult } from '../../search/type/search-result';
 
 export interface State {
@@ -11,5 +12,6 @@ export interface State {
     countries: SearchResult<Country>[];
     cities: SearchResult<City>[];
   };
-  searchRequestActive: false | AbortCallback;
+  loadedEntity?: Entity;
+  dataRequestActive: false | AbortCallback;
 }

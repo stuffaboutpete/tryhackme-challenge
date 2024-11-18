@@ -1,4 +1,4 @@
-import { AbortCallback } from './type/abort-callback';
+import { AbortCallback } from '../fetch/type/abort-callback';
 import { AllSearchResults } from './type/all-search-results';
 import { Response } from './type/response';
 

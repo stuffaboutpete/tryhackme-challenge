@@ -1,5 +1,5 @@
 import { getCodeSandboxHost } from "@codesandbox/utils";
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dispatch } from './model/state/type/dispatch';
 import { initialState } from './model/state/data/initial-state';
 import { reduce } from './model/state/reduce';
@@ -13,12 +13,14 @@ function Root() {
   const [state, setState] = useState(initialState);
   const latestState = useRef(state);
 
+  useEffect(() => dispatch('INIT', undefined), []);
+
   const dispatch: Dispatch = (action, payload) => {
     const newState = reduce(latestState.current, action, payload);
     const oldState = latestState;
     setState(newState);
     latestState.current = newState;
-    respond(action, oldState.current, newState, dispatch, { apiUrl });
+    respond(action, oldState.current, newState, dispatch, { apiUrl, path: window.location.pathname });
   };
 
   return (

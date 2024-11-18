@@ -12,12 +12,39 @@ export const reduce: Reduce = (currentState, action, payload) => produce(current
   }
 
   if (action === 'SEARCH_REQUEST_BEGIN') {
-    state.searchRequestActive = payload as Payload<'SEARCH_REQUEST_BEGIN'>;
+    state.dataRequestActive = payload as Payload<'SEARCH_REQUEST_BEGIN'>;
   }
 
   if (action === 'SEARCH_REQUEST_SUCCESS') {
     state.searchResults = payload as Payload<'SEARCH_REQUEST_SUCCESS'>;
-    state.searchRequestActive = false;
+    state.dataRequestActive = false;
+  }
+
+  if (action === 'HOTEL_REQUEST_BEGIN') {
+    state.dataRequestActive = payload as Payload<'HOTEL_REQUEST_BEGIN'>;
+  }
+
+  if (action === 'HOTEL_REQUEST_SUCCESS') {
+    state.loadedEntity = payload as Payload<'HOTEL_REQUEST_SUCCESS'>;
+    state.dataRequestActive = false;
+  }
+
+  if (action === 'COUNTRY_REQUEST_BEGIN') {
+    state.dataRequestActive = payload as Payload<'COUNTRY_REQUEST_BEGIN'>;
+  }
+
+  if (action === 'COUNTRY_REQUEST_SUCCESS') {
+    state.loadedEntity = payload as Payload<'COUNTRY_REQUEST_SUCCESS'>;
+    state.dataRequestActive = false;
+  }
+
+  if (action === 'CITY_REQUEST_BEGIN') {
+    state.dataRequestActive = payload as Payload<'CITY_REQUEST_BEGIN'>;
+  }
+
+  if (action === 'CITY_REQUEST_SUCCESS') {
+    state.loadedEntity = payload as Payload<'CITY_REQUEST_SUCCESS'>;
+    state.dataRequestActive = false;
   }
 
   if (action === 'CLEAR_SEARCH_RESULTS') {
