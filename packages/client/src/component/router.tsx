@@ -1,22 +1,15 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import type { Router } from '@remix-run/router';
-import { City } from '../model/entities/type/city';
-import { Country } from '../model/entities/type/country';
-import { Hotel } from '../model/entities/type/hotel';
-import { SearchResult } from '../model/search/type/search-result';
+import { State } from '../model/state/type/state';
+import { Dispatch } from '../model/state/type/dispatch';
 import ErrorMessage from './error-message';
 import PageSearch from './page-search';
 import PageSingleEntity from './page-single-entity';
 import WithId from './with-id';
 
 interface Props {
-  searchTerm: string;
-  hotels?: SearchResult<Hotel>[];
-  countries?: SearchResult<Country>[];
-  cities?: SearchResult<City>[];
-  showClearSearchButton: boolean;
-  onSearch: (searchTerm: string) => void;
-  onClearSearchResults: () => void;
+  state: State;
+  dispatch: Dispatch;
 }
 
 function Router(props: Props) {
@@ -25,13 +18,13 @@ function Router(props: Props) {
       path: '/',
       element: (
         <PageSearch
-          searchTerm={props.searchTerm}
-          hotels={props.hotels}
-          countries={props.countries}
-          cities={props.cities}
-          showClearButton={props.showClearSearchButton}
-          onSearch={props.onSearch}
-          onClearResults={props.onClearSearchResults}
+          searchTerm={props.state.searchTerm}
+          hotels={props.state.searchResults?.hotels }
+          countries={props.state.searchResults?.countries}
+          cities={props.state.searchResults?.cities}
+          showClearButton={props.state.searchResults ? true : false}
+          onSearch={searchTerm => props.dispatch('SEARCH_TERM_CHANGE', searchTerm)}
+          onClearResults={() => props.dispatch('CLEAR_SEARCH_RESULTS', undefined)}
         />
       ),
       errorElement: <ErrorMessage />
