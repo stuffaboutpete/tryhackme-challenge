@@ -2,7 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from 'cors';
 import { MongoClient } from "mongodb";
-import { hotels } from './src/route/hotels';
+import { city } from './src/route/city';
+import { country } from './src/route/country';
+import { hotel } from './src/route/hotel';
+import { notImplemented } from 'src/route/not-implemented';
 import { routeWrapper as createRouteWrapper } from './src/route/route-wrapper';
 import { search } from './src/route/search';
 
@@ -34,7 +37,12 @@ console.log('Successfully connected to MongoDB!');
 
 const routeWrapper = createRouteWrapper(mongoClient.db());
 
-app.get('/hotels', routeWrapper(hotels));
 app.get('/search/:query/:numberOfResults?', routeWrapper(search));
+app.get('/hotels', notImplemented);
+app.get('/hotel/:id', routeWrapper(hotel));
+app.get('/countries', notImplemented);
+app.get('/country/:id', routeWrapper(country));
+app.get('/cities', notImplemented);
+app.get('/city/:id', routeWrapper(city));
 
 app.listen(PORT, () => console.log(`API Server Started at ${PORT}`));
