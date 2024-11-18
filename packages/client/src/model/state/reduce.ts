@@ -12,12 +12,12 @@ export const reduce: Reduce = (currentState, action, payload) => produce(current
   }
 
   if (action === 'SEARCH_REQUEST_BEGIN') {
-    state.searchRequestAbortCallback = payload as Payload<'SEARCH_REQUEST_BEGIN'>;
+    state.searchRequestActive = payload as Payload<'SEARCH_REQUEST_BEGIN'>;
   }
 
   if (action === 'SEARCH_REQUEST_SUCCESS') {
     state.searchResults = payload as Payload<'SEARCH_REQUEST_SUCCESS'>;
-    state.searchRequestAbortCallback = undefined;
+    state.searchRequestActive = false;
   }
 
   if (action === 'CLEAR_SEARCH_RESULTS') {

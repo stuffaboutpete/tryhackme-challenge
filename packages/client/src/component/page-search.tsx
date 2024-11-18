@@ -9,6 +9,7 @@ interface Props {
   hotels?: SearchResult<Hotel>[];
   countries?: SearchResult<Country>[];
   cities?: SearchResult<City>[];
+  searchActive: boolean;
   showClearButton: boolean;
   onSearch: (searchTerm: string) => void;
   onClearResults: () => void;
@@ -22,7 +23,13 @@ function PageSearch(props: Props) {
           <div className="col-md-6">
             <div className="dropdown">
               <div className="form">
-                <i className="fa fa-search"></i>
+                <i className={`fa fa-search ${props.searchActive === false && 'active'}`}></i>
+                <div
+                  className={`spinner-border spinner-border-sm text-info ${props.searchActive === true && 'active'}`}
+                  role="status"
+                >
+                  <span className="sr-only">Loading...</span>
+                </div>
                 <input
                   type="text"
                   value={props.searchTerm}

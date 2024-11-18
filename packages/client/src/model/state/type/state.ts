@@ -11,5 +11,5 @@ export interface State {
     countries: SearchResult<Country>[];
     cities: SearchResult<City>[];
   };
-  searchRequestAbortCallback?: AbortCallback
+  searchRequestActive: false | AbortCallback;
 }

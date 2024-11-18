@@ -10,8 +10,8 @@ import { search } from '../search/search';
 
 export const respond: Respond = async (action, oldState, newState, dispatch, context) => {
   if (action === 'SEARCH_TERM_CHANGE' && newState.searchTerm !== '') {
-    if (oldState.searchRequestAbortCallback) {
-      oldState.searchRequestAbortCallback('Request no longer needed');
+    if (oldState.searchRequestActive) {
+      oldState.searchRequestActive('Request no longer needed');
     }
     const { abort, response } = search(newState.searchTerm, context.apiUrl as string);
     dispatch('SEARCH_REQUEST_BEGIN', abort);

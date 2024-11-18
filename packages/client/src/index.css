@@ -35,12 +35,20 @@ body {
   position: relative;
 }
 
-.form .fa-search {
+.form .fa-search,
+.spinner-border {
   position: absolute;
   top: 20px;
   left: 20px;
   color: #9ca3af;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+  transition-delay: 0.2s;
+}
 
+.form .fa-search.active,
+.spinner-border.active {
+  opacity: 1;
 }
 
 .form span {

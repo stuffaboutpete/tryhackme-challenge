@@ -22,6 +22,7 @@ function Router(props: Props) {
           hotels={props.state.searchResults?.hotels }
           countries={props.state.searchResults?.countries}
           cities={props.state.searchResults?.cities}
+          searchActive={props.state.searchRequestActive ? true : false}
           showClearButton={props.state.searchResults ? true : false}
           onSearch={searchTerm => props.dispatch('SEARCH_TERM_CHANGE', searchTerm)}
           onClearResults={() => props.dispatch('CLEAR_SEARCH_RESULTS', undefined)}
