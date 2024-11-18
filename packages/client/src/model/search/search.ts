@@ -22,6 +22,6 @@ export const search: T = (searchTerm, apiUrl) => {
 
   return {
     abort: (reason: string) => abortController.abort(reason),
-    response: new Promise(resolve => makeRequest().then(data => resolve(processResults(data))))
+    response: new Promise(resolve => makeRequest().then(data => resolve(processResults(data))).catch(() => {}))
   };
 };

@@ -11,9 +11,11 @@
     "start:client": "npm run -w client start",
     "dev": "npm start",
     "test": "npm run -w client test",
+    "e2e-test": "cypress run",
     "api-no-watch": "npm run -w api dev:no-watch"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "cypress": "^13.15.2"
   }
 }
