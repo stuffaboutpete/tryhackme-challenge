@@ -1,10 +1,14 @@
 interface Props {
-  name: string;
+  type: string;
+  id: string;
 }
 
 function PageSingleEntity(props: Props) {
   return (
-    <div>{props.name}</div>
+    <div>
+      <div>{props.type}</div>
+      <div>ID: {props.id}</div>
+    </div>
   );
 }
 

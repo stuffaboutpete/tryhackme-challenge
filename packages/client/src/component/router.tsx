@@ -7,6 +7,7 @@ import { SearchResult } from '../model/search/type/search-result';
 import ErrorMessage from './error-message';
 import PageSearch from './page-search';
 import PageSingleEntity from './page-single-entity';
+import WithId from './with-id';
 
 interface Props {
   searchTerm: string;
@@ -36,10 +37,25 @@ function Router(props: Props) {
       errorElement: <ErrorMessage />
     },
     {
-      path: '/temp',
-      element: (
-        <PageSingleEntity name="Temp" />
-      )
+      path: '/hotels/:id',
+      loader: async ({ params }) => params.id,
+      element: <WithId render={id => (
+        <PageSingleEntity type="Hotel" id={id} />
+      )} />
+    },
+    {
+      path: '/countries/:id',
+      loader: async ({ params }) => params.id,
+      element: <WithId render={id => (
+        <PageSingleEntity type="Country" id={id} />
+      )} />
+    },
+    {
+      path: '/cities/:id',
+      loader: async ({ params }) => params.id,
+      element: <WithId render={id => (
+        <PageSingleEntity type="City" id={id} />
+      )} />
     }
   ],
   {
