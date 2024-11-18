@@ -14,9 +14,9 @@ interface Props {
   onClearResults: () => void;
 }
 
-function App(props: Props) {
+function PageSearch(props: Props) {
   return (
-    <div className="App">
+    <div className="PageSearch">
       <div className="container">
         <div className="row height d-flex justify-content-center align-items-center">
           <div className="col-md-6">
@@ -78,4 +78,4 @@ function App(props: Props) {
   );
 }
 
-export default App;
+export default PageSearch;

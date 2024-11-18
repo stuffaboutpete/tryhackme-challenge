@@ -6,7 +6,7 @@ import { Country } from './model/entities/type/country';
 import { Hotel } from './model/entities/type/hotel';
 import { SearchResult } from './model/search/type/search-result';
 import { search } from './model/search/search';
-import App from './component/app';
+import Router from './component/router';
 
 const codeSandboxHost = getCodeSandboxHost(3001);
 const apiUrl = codeSandboxHost ? `https://${codeSandboxHost}` : 'http://localhost:3001';
@@ -51,14 +51,14 @@ function Root() {
   };
 
   return (
-    <App
+    <Router
       searchTerm={searchTerm}
       hotels={hotels}
       countries={countries}
       cities={cities}
-      showClearButton={showClearBtn}
+      showClearSearchButton={showClearBtn}
       onSearch={onSearch}
-      onClearResults={clearResults}
+      onClearSearchResults={clearResults}
     />
   );
 }
