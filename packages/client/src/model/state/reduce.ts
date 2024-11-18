@@ -1,6 +1,7 @@
 import { produce } from 'immer';
 import { Payload } from './type/action';
 import { Reduce } from './type/reduce';
+import { set as setToCache } from '../search-cache/set';
 
 export const reduce: Reduce = (currentState, action, payload) => produce(currentState, state => {
   if (action === 'SEARCH_TERM_CHANGE') {
@@ -16,8 +17,14 @@ export const reduce: Reduce = (currentState, action, payload) => produce(current
   }
 
   if (action === 'SEARCH_REQUEST_SUCCESS') {
-    state.searchResults = payload as Payload<'SEARCH_REQUEST_SUCCESS'>;
+    const { searchResults, searchTerm } = payload as Payload<'SEARCH_REQUEST_SUCCESS'>;
+    state.searchResults = searchResults;
+    state.searchCache = setToCache(searchResults, searchTerm, state.searchCache);
     state.dataRequestActive = false;
+  }
+
+  if (action === 'SEARCH_CACHE_HIT') {
+    state.searchResults = payload as Payload<'SEARCH_CACHE_HIT'>;
   }
 
   if (action === 'HOTEL_REQUEST_BEGIN') {

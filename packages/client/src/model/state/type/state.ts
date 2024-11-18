@@ -3,6 +3,7 @@ import { Country } from '../../entities/type/country';
 import { Entity } from '../../entities/type/entity';
 import { Hotel } from '../../entities/type/hotel';
 import { AbortCallback } from '../../fetch/type/abort-callback';
+import { Cache } from '../../search-cache/type/cache';
 import { SearchResult } from '../../search/type/search-result';
 
 export interface State {
@@ -14,4 +15,5 @@ export interface State {
   };
   loadedEntity?: Entity;
   dataRequestActive: false | AbortCallback;
+  searchCache: Cache;
 }

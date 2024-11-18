@@ -13,6 +13,7 @@ import { id } from '../url/id';
 import { entity } from '../url/entity';
 import { load } from '../entities/load';
 import { search } from '../search/search';
+import { get as getFromCache } from '../search-cache/get';
 
 export const respond: Respond = async (action, oldState, newState, dispatch, context) => {
   if (action === 'INIT') {
@@ -47,13 +48,20 @@ export const respond: Respond = async (action, oldState, newState, dispatch, con
   }
 
   if (action === 'SEARCH_TERM_CHANGE' && newState.searchTerm !== '') {
+    const cacheResult = getFromCache(newState.searchTerm, newState.searchCache);
+
+    if (cacheResult) {
+      dispatch('SEARCH_CACHE_HIT', cacheResult);
+      return;
+    }
+
     if (oldState.dataRequestActive) oldState.dataRequestActive('Request no longer needed');
 
     const { abort, response } = search(newState.searchTerm, context.apiUrl as string);
 
     dispatch('SEARCH_REQUEST_BEGIN', abort);
     const searchResults = await response;
-    dispatch('SEARCH_REQUEST_SUCCESS', searchResults);
+    dispatch('SEARCH_REQUEST_SUCCESS', { searchResults, searchTerm: newState.searchTerm });
 
     // TODO Handle error states
   }

@@ -8,7 +8,8 @@ export interface ActionPayloadMap {
   INIT: undefined;
   SEARCH_TERM_CHANGE: string;
   SEARCH_REQUEST_BEGIN: AbortCallback;
-  SEARCH_REQUEST_SUCCESS: AllSearchResults;
+  SEARCH_REQUEST_SUCCESS: { searchResults: AllSearchResults, searchTerm: string };
+  SEARCH_CACHE_HIT: AllSearchResults;
   HOTEL_REQUEST_BEGIN: AbortCallback;
   HOTEL_REQUEST_SUCCESS: Hotel;
   COUNTRY_REQUEST_BEGIN: AbortCallback;
